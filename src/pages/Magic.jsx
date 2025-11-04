@@ -1,43 +1,48 @@
-import { useState } from 'react'
-import { api } from '../lib/api.js'
+import { useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 export default function Magic() {
-  const [correo, setCorreo] = useState('')
-  const [sending, setSending] = useState(false)
-  const [devLink, setDevLink] = useState('')
+  const [params] = useSearchParams();
+  const navigate = useNavigate();
 
-  async function sendLink() {
-    if (sending) return
-    setSending(true)
-    try {
-      const res = await fetch(api('auth/magic-link'), {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ correo })
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data?.error || 'No se pudo enviar el enlace')
-      if (data.link) setDevLink(data.link)
-      alert(data.sent ? 'Enlace enviado a tu correo ✉️' : 'Dev: enlace generado (abajo)')
-    } catch (err) { alert(err.message) }
-    finally { setSending(false) }
-  }
+  useEffect(() => {
+    const token = params.get("token");
+    const email = params.get("email");
+    if (!token || !email) {
+      alert("Enlace inválido o incompleto");
+      navigate("/login");
+      return;
+    }
+
+    (async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE}auth/magic/verify`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include", // setea refresh cookie
+          body: JSON.stringify({ correo: email, token }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          alert(data.error || "El enlace ha expirado");
+          return navigate("/login");
+        }
+        localStorage.setItem("accessToken", data.accessToken);
+        alert("Inicio de sesión exitoso ✅");
+        navigate("/profile");
+      } catch {
+        alert("Error al verificar el enlace.");
+        navigate("/login");
+      }
+    })();
+  }, []);
 
   return (
-    <main style={{padding:16, maxWidth:520}}>
-      <h2>Login por enlace mágico</h2>
-      <p>Ingresa tu correo para recibir un enlace sin contraseña.</p>
-      <input value={correo} onChange={e=>setCorreo(e.target.value)} type="email" required placeholder="tu@correo.com"
-             style={{width:'100%', marginBottom:12, padding:8}} />
-      <button onClick={sendLink} disabled={sending}>{sending ? 'Enviando...' : 'Enviar enlace'}</button>
-
-      {devLink && (
-        <div style={{marginTop:16, padding:12, border:'1px dashed #aaa'}}>
-          <strong>Dev link:</strong>
-          <div><a href={devLink}>{devLink}</a></div>
-          <small>Solo aparece si no configuras SMTP; en producción se envía por email.</small>
-        </div>
-      )}
+    <main className="hero gradient">
+      <section className="panel panel--wide">
+        <h1 className="title-xl">Verificando enlace mágico…</h1>
+        <p className="subtitle-lg">Por favor espera un momento ⏳</p>
+      </section>
     </main>
-  )
+  );
 }

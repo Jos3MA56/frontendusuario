@@ -1,87 +1,73 @@
-import { useState } from 'react'
-import { api } from '../lib/api.js'
+import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Register() {
-  const [form, setForm] = useState({
-    correo: '', password: '', nombre: '',
-    apPaterno: '', apMaterno: '', telefono: '',
-    edad: '', isActive: true
-  })
-  const [sending, setSending] = useState(false)
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    const pw1 = (f.get("password") || "").trim();
+    const pw2 = (f.get("password2") || "").trim();
+    if (pw1 !== pw2) return alert("Las contraseñas no coinciden");
 
-  const onChange = (e) => {
-    const { name, value, type, checked } = e.target
-    setForm(f => ({ ...f, [name]: type === 'checkbox' ? checked : value }))
-  }
+    const datos = {
+      nombre: f.get("nombre"),
+      apPaterno: f.get("apPaterno"),
+      apMaterno: f.get("apMaterno"),
+      telefono: f.get("telefono"),
+      correo: f.get("correo"),
+      edad: Number(f.get("edad")) || undefined,
+      password: pw1,
+    };
 
-  async function onSubmit(e) {
-    e.preventDefault()
-    if (sending) return
-    setSending(true)
     try {
-      const payload = {
-        correo: form.correo,
-        passwordHash: form.password,         // el backend la hashea
-        nombre: form.nombre || '',
-        apPaterno: form.apPaterno || '',
-        apMaterno: form.apMaterno || '',
-        telefono: form.telefono || '',
-        edad: form.edad ? Number(form.edad) : undefined,
-        isActive: form.isActive
+      const res = await fetch(`${import.meta.env.VITE_API_BASE}auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert("Registro exitoso ✅");
+        e.target.reset();
+      } else {
+        alert(data.error || "Error al registrar");
       }
-
-      const res = await fetch(api('auth/register'), {
-        method: 'POST',
-        headers: { 'Content-Type':'application/json' },
-        body: JSON.stringify(payload)
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data?.error || 'No se pudo registrar')
-      alert('Registro exitoso ✅')
-      setForm({
-        correo:'', password:'', nombre:'',
-        apPaterno:'', apMaterno:'', telefono:'',
-        edad:'', isActive: true
-      })
     } catch (err) {
-      alert(err.message)
-    } finally {
-      setSending(false)
+      alert("Error de conexión con el servidor");
     }
-  }
+  };
+
+  const toggle = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.type = el.type === "password" ? "text" : "password";
+  };
 
   return (
-    <main style={{padding:16, maxWidth:480}}>
-      <h2>Registro</h2>
-      <form onSubmit={onSubmit}>
-        <label>Correo</label>
-        <input name="correo" value={form.correo} onChange={onChange} type="email" required style={{width:'100%', marginBottom:8}} />
+    <section className="panel">
+      <h1 className="panel__title">Registro</h1>
+      <form className="stack" onSubmit={onSubmit}>
+        <input className="field" name="nombre" placeholder="Nombre" required />
+        <input className="field" name="apPaterno" placeholder="Apellido Paterno" required />
+        <input className="field" name="apMaterno" placeholder="Apellido Materno" />
+        <input className="field" name="telefono" placeholder="Número de teléfono" />
+        <input className="field" type="email" name="correo" placeholder="Correo" required />
+        <input className="field" type="number" min="0" name="edad" placeholder="Edad" />
 
-        <label>Nombre</label>
-        <input name="nombre" value={form.nombre} onChange={onChange} type="text" style={{width:'100%', marginBottom:8}} />
+        <div className="field--wrap">
+          <input id="pw1" className="field" type="password" name="password" placeholder="Contraseña" required />
+          <button type="button" className="eye" onClick={() => toggle("pw1")}>👁️</button>
+        </div>
 
-        <label>Apellido paterno</label>
-        <input name="apPaterno" value={form.apPaterno} onChange={onChange} type="text" style={{width:'100%', marginBottom:8}} />
+        <div className="field--wrap">
+          <input id="pw2" className="field" type="password" name="password2" placeholder="Confirmar contraseña" required />
+          <button type="button" className="eye" onClick={() => toggle("pw2")}>👁️</button>
+        </div>
 
-        <label>Apellido materno</label>
-        <input name="apMaterno" value={form.apMaterno} onChange={onChange} type="text" style={{width:'100%', marginBottom:8}} />
-
-        <label>Teléfono</label>
-        <input name="telefono" value={form.telefono} onChange={onChange} type="tel" pattern="\d{10}" placeholder="10 dígitos" style={{width:'100%', marginBottom:8}} />
-
-        <label>Edad</label>
-        <input name="edad" value={form.edad} onChange={onChange} type="number" min="0" style={{width:'100%', marginBottom:8}} />
-
-        <label>Password</label>
-        <input name="password" value={form.password} onChange={onChange} type="password" required style={{width:'100%', marginBottom:8}} />
-
-        <label style={{display:'flex', alignItems:'center', gap:8, margin:'8px 0'}}>
-          <input type="checkbox" name="isActive" checked={form.isActive} onChange={onChange} />
-          Activo
-        </label>
-
-        <button disabled={sending}>{sending ? 'Enviando...' : 'Registrarme'}</button>
+        <button className="btn" type="submit">Registrar</button>
+         <div className="muted">
+          ¿Ya tienes cuenta? <Link to="/login" className="link">Inicie Sesion</Link>
+        </div>
       </form>
-    </main>
-  )
+    </section>
+  );
 }

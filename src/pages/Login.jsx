@@ -1,39 +1,62 @@
-import { useState } from 'react'
-import { api } from '../lib/api.js'
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const [form, setForm] = useState({ correo:'', password:'' })
-  const [sending, setSending] = useState(false)
-  const onChange = e => setForm(f => ({...f, [e.target.name]: e.target.value}))
+  const [show, setShow] = React.useState(false);
+  const navigate = useNavigate();
 
-  async function onSubmit(e) {
-    e.preventDefault()
-    if (sending) return
-    setSending(true)
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    const correo = f.get("email");
+    const password = f.get("password");
+
     try {
-      const res = await fetch(api('auth/login'), {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ email: form.correo, password: form.password })
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data?.error || 'No se pudo iniciar sesión')
-      localStorage.setItem('token', data.token)
-      alert('Inicio de sesión exitoso ✅')
-    } catch (err) { alert(err.message) }
-    finally { setSending(false) }
-  }
+      const res = await fetch(`${import.meta.env.VITE_API_BASE}auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // para cookie refresh httpOnly
+        body: JSON.stringify({ correo, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error || "Credenciales inválidas");
+      localStorage.setItem("accessToken", data.accessToken);
+      navigate("/profile");
+    } catch (err) {
+      alert("Error de conexión con el servidor");
+    }
+  };
 
   return (
-    <main style={{padding:16, maxWidth:420}}>
-      <h2>Login (JWT)</h2>
-      <form onSubmit={onSubmit}>
-        <label>Correo</label>
-        <input name="correo" value={form.correo} onChange={onChange} type="email" required style={{width:'100%', marginBottom:8}} />
-        <label>Password</label>
-        <input name="password" value={form.password} onChange={onChange} type="password" required style={{width:'100%', marginBottom:12}} />
-        <button disabled={sending}>{sending ? 'Ingresando...' : 'Ingresar'}</button>
-      </form>
+    <main className="hero gradient">
+      <section className="panel panel--wide">
+        <h1 className="title-xl">Login</h1>
+        <p className="subtitle-lg">Inicia sesión en tu cuenta</p>
+
+        <form className="stack" onSubmit={onSubmit}>
+          <input className="field" type="email" name="email" placeholder="Correo" required />
+          <div className="field--wrap">
+            <input
+              className="field"
+              type={show ? "text" : "password"}
+              name="password"
+              placeholder="Contraseña"
+              required
+            />
+            <button type="button" className="eye eye--inside" onClick={() => setShow(!show)}>👁️</button>
+          </div>
+          <button className="btn btn--primary btn--lg" type="submit">Iniciar sesión</button>
+        </form>
+
+        <div className="muted">
+          ¿Prefieres no usar contraseña?{" "}
+          <Link to="/magic/request" className="link">Accede con un enlace mágico ✨</Link>
+        </div>
+
+        <div className="muted">
+          ¿No tienes cuenta? <Link to="/register" className="link">Regístrate</Link>
+        </div>
+      </section>
     </main>
-  )
+  );
 }
