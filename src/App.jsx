@@ -1,5 +1,4 @@
-// App.jsx
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import MagicRequest from "./pages/MagicRequest.jsx";
 import Magic from "./pages/Magic.jsx";
@@ -11,7 +10,7 @@ import "./styles.css";
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <>
       <Header />
       <div className="header-spacer" />
       <Routes>
@@ -23,6 +22,6 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
