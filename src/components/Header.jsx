@@ -10,7 +10,7 @@ export default function Header() {
         {/* Logo */}
         <div className="header__logo">
           <img
-            src="/logo_pizzamya.png"
+            img="/pizzas/pizzamya.jpg"
             alt="Pizza Mya"
             className="header__img"
           />
