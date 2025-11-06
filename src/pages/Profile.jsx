@@ -14,7 +14,10 @@ export default function Profile() {
       return alert("No has iniciado sesión");
     }
 
-    const url = `${import.meta.env.VITE_API_BASE}profile`;
+    // elimina barras repetidas al final ANTES de concatenar
+    const base = (import.meta.env.VITE_API_BASE || "").replace(/\/+$/, "");
+    const url = `${base}/profile`;
+
 
     try {
       const res = await fetch(url, {
