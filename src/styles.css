@@ -229,7 +229,7 @@ body{
 .header__logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 18px;
 }
 .header__img {
   width: 48px;
