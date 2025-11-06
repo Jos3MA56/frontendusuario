@@ -32,7 +32,9 @@ export default function MagicRequest() {
         <form className="stack" onSubmit={onSend}>
           <input className="field" type="email" name="email" placeholder="Correo electrónico" required />
           <button className="btn btn--purple btn--lg" type="submit">Enviar enlace mágico</button>
-          <Link className="btn btn--ghost btn--lg" to="/login">Volver al login</Link>
+          <div className="muted">
+            <Link to="/login" className="link">Volver a Login</Link>
+          </div>
         </form>
       </section>
     </main>
