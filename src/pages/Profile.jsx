@@ -62,9 +62,6 @@ export default function Profile() {
           {user.edad && <p><b>Edad:</b> {user.edad}</p>}
         </div>
       )}
-      <div className="muted">
-          <Link to="/" className="link">Ve a inicio</Link>
-        </div>
     </section>
   );
 }
