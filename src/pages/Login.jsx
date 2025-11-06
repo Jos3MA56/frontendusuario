@@ -1,9 +1,18 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export default function Login() {
   const [show, setShow] = React.useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  React.useEffect(() => {
+    // Si fue redirigido desde Home, muestra el mensaje una sola vez
+    if (location.state?.msg) {
+      alert(location.state.msg);
+      navigate(location.pathname, { replace: true });
+    }
+  }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -19,9 +28,15 @@ export default function Login() {
         body: JSON.stringify({ correo, password }),
       });
       const data = await res.json();
+
       if (!res.ok) return alert(data.error || "Credenciales inválidas");
-      localStorage.setItem("accessToken", data.accessToken);
-      navigate("/profile");
+
+      // ⬇️ Guarda el token con la misma clave que usa Home
+      localStorage.setItem("access_token", data.accessToken);
+
+      // ⬇️ Vuelve al destino original (o /profile si no hay redirect)
+      const redirectTo = location.state?.redirectTo || "/profile";
+      navigate(redirectTo, { replace: true });
     } catch (err) {
       alert("Error de conexión con el servidor");
     }
@@ -36,14 +51,8 @@ export default function Login() {
         <form className="stack" onSubmit={onSubmit}>
           <input className="field" type="email" name="email" placeholder="Correo" required />
           <div className="field--wrap">
-            <input
-              className="field"
-              type={show ? "text" : "password"}
-              name="password"
-              placeholder="Contraseña"
-              required
-            />
-            <button type="button" className="eye eye--inside" onClick={() => setShow(!show)}>👁️</button>
+            <input className="field" type={show ? "text" : "password"} name="password" placeholder="Contraseña" required />
+            <button type="button" className="eye eye--inside" onClick={() => setShow(!show)} aria-label="Mostrar/Ocultar contraseña" >👁️</button>
           </div>
           <button className="btn btn--primary btn--lg" type="submit">Iniciar sesión</button>
         </form>
