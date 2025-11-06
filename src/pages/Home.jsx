@@ -1,46 +1,88 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useCart } from "../context/CartContext.jsx";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const PIZZAS = [
-  { id: 1, nombre: "Margarita", precio: 129, img: "/pizzas/margarita.jpg" },
-  { id: 2, nombre: "Pepperoni", precio: 149, img: "/pizzas/pepperoni.jpg" },
-  { id: 3, nombre: "Hawaiana", precio: 145, img: "/pizzas/hawaiana.jpg" },
-  { id: 4, nombre: "Cuatro Quesos", precio: 159, img: "/pizzas/cuatroquesos.jpg" },
+  {
+    id: 1,
+    nombre: "Margarita",
+    descr: "Tomate, mozzarella y albahaca.",
+    precio: 129,
+    img: "/pizzas/margarita.jpg"
+  },
+  {
+    id: 2,
+    nombre: "Pepperoni",
+    descr: "Doble pepperoni y queso.",
+    precio: 149,
+    img: "/pizzas/pepperoni.jpg"
+  },
+  {
+    id: 3,
+    nombre: "Hawaiana",
+    descr: "Jamón, piña y mozzarella.",
+    precio: 145,
+    img: "/pizzas/hawaiana.jpg"
+  },
+  {
+    id: 4,
+    nombre: "Cuatro Quesos",
+    descr: "Mozzarella, parmesano, gouda y azul.",
+    precio: 159,
+    img: "/pizzas/cuatroquesos.jpg"
+  }
 ];
+
+
+const getToken = () =>
+  localStorage.getItem("access_token") || localStorage.getItem("token") || "";
 
 export default function Home() {
   const navigate = useNavigate();
-  const { add } = useCart();
-  const token = localStorage.getItem("access_token");
-  const puedeAgregar = !!token;
+  const location = useLocation();
 
-  const onAgregar = (pizza) => {
-    if (!puedeAgregar) {
-      return navigate("/login", { state: { redirectTo: "/", msg: "Inicia sesión para agregar pizzas" } });
+  React.useEffect(() => {
+    if (location.state?.msg) {
+      alert(location.state.msg);
+      // limpia el state para que no repita el alert si recargas
+      navigate(location.pathname, { replace: true });
     }
-    add(1); // suma 1 al contador
-    // Opcional: feedback
-    // alert(`Añadida: ${pizza.nombre}`);
+  }, []);
+
+  const handleAdd = (pizza) => {
+    if (!getToken()) {
+      // no logueado → manda a login y recuerda a dónde volver
+      return navigate("/login", {
+        state: { redirectTo: "/", msg: "Inicia sesión para agregar al carrito 🍕" }
+      });
+    }
+    // aquí va tu lógica real de carrito
+    alert(`🍕 Agregada: ${pizza.nombre}`);
   };
 
   return (
-    <main className="container">
-      <h1 className="page-title">Menú de Pizzas</h1>
-      <div className="grid grid--4">
-        {PIZZAS.map((p) => (
-          <article key={p.id} className="card">
-            <img src={p.img} alt={p.nombre} className="card__img" />
-            <div className="card__body">
-              <div className="card__title">{p.nombre}</div>
-              <div className="card__price">${p.precio} MXN</div>
-              <button className="btn btn--green" onClick={() => onAgregar(p)}>
-                Agregar
-              </button>
-            </div>
-          </article>
-        ))}
-      </div>
+    <main className="shell">
+      <section className="container">
+        <h2 className="home-section__title">Nuestras pizzas</h2>
+        <div className="pizza-grid">
+          {PIZZAS.map((p) => (
+            <article key={p.id} className="pizza-card">
+              <div className="pizza-card__imgwrap">
+                <img src={p.img} alt={p.nombre} className="pizza-card__img" />
+              </div>
+              <div className="pizza-card__body">
+                <h3 className="pizza-card__title">{p.nombre}</h3>
+                <p className="pizza-card__desc">{p.descr}</p>
+                <div className="pizza-card__footer">
+                  <span className="pizza-card__price">${p.precio} MXN</span>
+                  <button className="btn btn--primary btn--sm" onClick={() => handleAdd(p)}>
+                    Agregar
+                  </button>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
     </main>
   );
 }

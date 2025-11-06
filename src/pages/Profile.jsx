@@ -1,52 +1,88 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useCart } from "../context/CartContext.jsx";
+import { useNavigate } from "react-router-dom"; // 👈 Importa el hook
 
-export default function Header() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { count } = useCart();
-  const [isLogged, setIsLogged] = React.useState(false);
+export default function Profile() {
+  const [loading, setLoading] = React.useState(false);
+  const [user, setUser] = React.useState(null);
+  const navigate = useNavigate(); // 👈 Inicializa navegación
 
-  React.useEffect(() => {
-    setIsLogged(!!localStorage.getItem("access_token"));
-  }, [location.pathname]);
+  const loadProfile = async () => {
+    if (loading) return;
+    setLoading(true);
+
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      setLoading(false);
+      return alert("No has iniciado sesión");
+    }
+
+    // elimina barras repetidas al final ANTES de concatenar
+    const base = (import.meta.env.VITE_API_BASE || "").replace(/\/+$/, "");
+    const url = `${base}/profile`;
+
+    try {
+      const res = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      const ct = res.headers.get("content-type") || "";
+      if (!res.ok) {
+        if (ct.includes("application/json")) {
+          const err = await res.json();
+          throw new Error(err.error || `Error ${res.status}`);
+        } else {
+          throw new Error(`Error ${res.status}: ${await res.text()}`);
+        }
+      }
+
+      const data = await res.json();
+      setUser(data.user);
+
+      // ✅ Redirige al inicio una vez cargado el perfil correctamente
+      navigate("/"); // o "/inicio" si tienes esa ruta
+    } catch (e) {
+      alert(e.message || "Error de conexión con el servidor");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <header className="header">
-      <div className="header__inner">
-        <div className="header__logo" onClick={() => navigate("/")} style={{cursor:"pointer"}}>
-          <img src="/pizzas/pizzamya.jpg" alt="Pizza Mya" className="header__img" />
-          <span className="header__brand">Pizza Mya</span>
-        </div>
+    <section className="panel">
+      <h1 className="panel__title">Perfil</h1>
+      <button
+        className="btn btn--secondary"
+        onClick={loadProfile}
+        disabled={loading}
+      >
+        {loading ? "Cargando..." : "Cargar Perfil"}
+      </button>
 
-        <nav className="header__nav">
-          <Link to="/" className={`nav__link ${location.pathname === "/" ? "active" : ""}`}>
-            Inicio
-          </Link>
-
-          {/* Ícono carrito con badge */}
-          <div className="nav__cart">
-            <span className="cart__icon" title="Carrito">🛒</span>
-            {count > 0 && <span className="cart__badge">{count}</span>}
-          </div>
-
-          {!isLogged ? (
-            <>
-              <Link to="/login" className={`nav__link ${location.pathname === "/login" ? "active" : ""}`}>
-                Login
-              </Link>
-              <Link to="/register" className={`nav__link ${location.pathname === "/register" ? "active" : ""}`}>
-                Registro
-              </Link>
-            </>
-          ) : (
-            <button className="nav__logout" onClick={() => { localStorage.removeItem("access_token"); navigate("/login"); }}>
-              Cerrar sesión
-            </button>
+      {user && (
+        <div style={{ marginTop: 16 }}>
+          <p>
+            <b>Nombre:</b> {user.nombre} {user.apPaterno} {user.apMaterno}
+          </p>
+          <p>
+            <b>Correo:</b> {user.correo}
+          </p>
+          {user.telefono && (
+            <p>
+              <b>Teléfono:</b> {user.telefono}
+            </p>
           )}
-        </nav>
-      </div>
-    </header>
+          {user.edad && (
+            <p>
+              <b>Edad:</b> {user.edad}
+            </p>
+          )}
+        </div>
+      )}
+    </section>
   );
 }
