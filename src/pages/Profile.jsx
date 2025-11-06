@@ -14,8 +14,7 @@ export default function Profile() {
       return alert("No has iniciado sesión");
     }
 
-    const base = import.meta.env.VITE_API_BASE?.replace(/\/+$/,"") || "";
-    const url = `${base}/profile`;
+    const url = `${import.meta.env.VITE_API_BASE}profile`;
 
     try {
       const res = await fetch(url, {
