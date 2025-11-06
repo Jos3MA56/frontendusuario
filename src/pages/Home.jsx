@@ -7,28 +7,28 @@ const PIZZAS = [
     nombre: "Margarita",
     descr: "Tomate, mozzarella y albahaca.",
     precio: 129,
-    img: "https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg"
+    img: "/pizzas/margarita.jpg"
   },
   {
     id: 2,
     nombre: "Pepperoni",
     descr: "Doble pepperoni y queso.",
     precio: 149,
-    img: "https://cdn.pixabay.com/photo/2023/07/10/18/34/pizza-8119829_1280.jpg"
+    img: "/pizzas/pepperoni.jpg"
   },
   {
     id: 3,
     nombre: "Hawaiana",
     descr: "Jamón, piña y mozzarella.",
     precio: 145,
-    img: "https://cdn.pixabay.com/photo/2022/08/26/07/12/pizza-7411393_1280.jpg"
+    img: "/pizzas/hawaiana.jpg"
   },
   {
     id: 4,
     nombre: "Cuatro Quesos",
     descr: "Mozzarella, parmesano, gouda y azul.",
     precio: 159,
-    img: "https://cdn.pixabay.com/photo/2017/08/21/14/52/pizza-2668471_1280.jpg"
+    img: "/pizzas/cuatroquesos.jpg"
   }
 ];
 
