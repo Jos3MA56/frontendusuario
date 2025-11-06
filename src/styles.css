@@ -270,3 +270,17 @@ body{
     gap: 8px;
   }
 }
+
+.nav__logout {
+  background: #C00000;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.nav__logout:hover {
+  background: #FF6600;
+}
