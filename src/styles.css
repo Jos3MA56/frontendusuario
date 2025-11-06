@@ -284,3 +284,10 @@ body{
 .nav__logout:hover {
   background: #FF6600;
 }
+.nav__cart { position: relative; margin-right: 8px; display: inline-flex; align-items: center; }
+.cart__icon { font-size: 20px; line-height: 1; }
+.cart__badge {
+  position: absolute; top: -6px; right: -10px;
+  background: #e11d48; color: #fff; font-size: 12px;
+  padding: 2px 6px; border-radius: 999px; font-weight: 700; min-width: 18px; text-align: center;
+}
