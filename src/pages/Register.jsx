@@ -55,12 +55,12 @@ export default function Register() {
 
         <div className="field--wrap">
           <input id="pw1" className="field" type="password" name="password" placeholder="Contraseña" required />
-          <button type="button" className="eye" onClick={() => toggle("pw1")}> 👁️</button>
+          <button type="button" className="eye eye--inside" onClick={() => toggle("pw1")} aria-label="Mostrar/Ocultar contraseña" >👁️</button>
         </div>
 
         <div className="field--wrap">
           <input id="pw2" className="field" type="password" name="password2" placeholder="Confirmar contraseña" required />
-          <button type="button" className="eye" onClick={() => toggle("pw2")}> 👁️</button>
+          <button type="button" className="eye eye--inside" onClick={() => toggle("pw2")} aria-label="Mostrar/Ocultar contraseña" >👁️</button>
         </div>
 
         <button className="btn" type="submit">Registrar</button>
