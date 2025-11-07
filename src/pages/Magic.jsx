@@ -23,7 +23,7 @@ export default function Magic() {
         const res = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          credentials: "include", // setea refresh cookie httpOnly
+          credentials: "include",
           body: JSON.stringify({ correo: emailParam, token: tokenParam }),
         });
 
@@ -35,11 +35,10 @@ export default function Magic() {
           return navigate("/login", { replace: true });
         }
 
-        // 🔑 Usa SIEMPRE la MISMA clave que lee Profile.jsx:
         localStorage.setItem("access_token", data.accessToken);
 
         alert("Inicio de sesión exitoso ✅");
-        navigate("/profile", { replace: true }); // o "/" si prefieres ir al inicio
+        navigate("/profile", { replace: true });
       } catch (e) {
         alert("Error al verificar el enlace.");
         navigate("/login", { replace: true });

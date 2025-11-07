@@ -1,10 +1,10 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // 👈 Importa el hook
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const [loading, setLoading] = React.useState(false);
   const [user, setUser] = React.useState(null);
-  const navigate = useNavigate(); // 👈 Inicializa navegación
+  const navigate = useNavigate(); 
 
   const loadProfile = async () => {
     if (loading) return;
@@ -16,7 +16,6 @@ export default function Profile() {
       return alert("No has iniciado sesión");
     }
 
-    // elimina barras repetidas al final ANTES de concatenar
     const base = (import.meta.env.VITE_API_BASE || "").replace(/\/+$/, "");
     const url = `${base}/profile`;
 
@@ -43,8 +42,7 @@ export default function Profile() {
       const data = await res.json();
       setUser(data.user);
 
-      // ✅ Redirige al inicio una vez cargado el perfil correctamente
-      navigate("/"); // o "/inicio" si tienes esa ruta
+      navigate("/"); 
     } catch (e) {
       alert(e.message || "Error de conexión con el servidor");
     } finally {

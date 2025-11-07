@@ -7,7 +7,6 @@ export default function Login() {
   const location = useLocation();
 
   React.useEffect(() => {
-    // Si fue redirigido desde Home, muestra el mensaje una sola vez
     if (location.state?.msg) {
       alert(location.state.msg);
       navigate(location.pathname, { replace: true });
@@ -24,17 +23,15 @@ export default function Login() {
       const res = await fetch(`${import.meta.env.VITE_API_BASE}auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // para cookie refresh httpOnly
+        credentials: "include", 
         body: JSON.stringify({ correo, password }),
       });
       const data = await res.json();
 
       if (!res.ok) return alert(data.error || "Credenciales inválidas");
 
-      // ⬇️ Guarda el token con la misma clave que usa Home
       localStorage.setItem("access_token", data.accessToken);
 
-      // ⬇️ Vuelve al destino original (o /profile si no hay redirect)
       const redirectTo = location.state?.redirectTo || "/profile";
       navigate(redirectTo, { replace: true });
     } catch (err) {

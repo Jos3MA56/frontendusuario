@@ -2,44 +2,40 @@
 body{
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;
   margin:0;
-  background:#fff; /* Fondo blanco */
-  color:#000; /* Texto negro */
+  background:#fff; 
+  color:#000; 
 }
 
-/* Contenedor general */
 .container{
   max-width:960px;
   margin:0 auto;
   padding:24px;
 }
 
-/* Barra superior tipo Pizza Mya */
 .header {
-  background:#FF6600; /* naranja principal */
-  border-bottom:8px solid #C00000; /* línea roja */
-  border-top:4px solid #000; /* línea negra superior */
+  background:#FF6600;
+  border-bottom:8px solid #C00000; 
+  border-top:4px solid #000; 
   padding:16px;
   color:white;
   font-weight:bold;
   text-align:left;
 }
 
-/* Navegación */
 .nav{
   display:flex;
   gap:12px;
   margin-bottom:16px;
 }
 .nav a{
-  color:#C00000; /* rojo */
+  color:#C00000; 
   text-decoration:none;
   font-weight:600;
 }
 .nav a:hover{
-  color:#000; /* cambia a negro al pasar el mouse */
+  color:#000;
 }
 
-/* Panel principal */
 .panel{
   background:#fff;
   border:2px solid #FF6600;
@@ -50,11 +46,10 @@ body{
   box-shadow:0 6px 20px rgba(0,0,0,.15);
 }
 
-/* Títulos */
 .title-xl{
   font-size:44px;
   font-weight:800;
-  color:#C00000; /* rojo */
+  color:#C00000;
   margin:0 0 6px;
   text-align:center;
 }
@@ -65,7 +60,6 @@ body{
   text-align:center;
 }
 
-/* Campos de formulario */
 .stack{
   display:flex;
   flex-direction:column;
@@ -78,43 +72,41 @@ body{
   background:#fff;
   color:#000;
 }
-/* === Campos de texto === */
+
 .field--wrap {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-/* Input */
+
 .field {
   width: 100%;
-  padding: 12px 40px 12px 14px; /* deja espacio a la derecha para el ojo */
+  padding: 12px 40px 12px 14px;
   border-radius: 10px;
-  border: 1.5px solid #C00000; /* rojo Pizza Mya */
+  border: 1.5px solid #C00000; 
   background: #fff;
   color: #000;
   font-size: 15px;
 }
 
-/* Ojo dentro del campo (mismo estilo para login y register) */
 .eye.eye--inside {
   position: absolute;
-  right: 10px;              /* distancia ideal */
+  right: 10px;              
   top: 50%;
   transform: translateY(-50%);
-  background: transparent;  /* sin fondo gris */
+  background: transparent; 
   border: none;
   font-size: 17px;
-  color: #C00000;           /* rojo Pizza Mya */
+  color: #C00000;           
   cursor: pointer;
   padding: 0;
 }
 
-/* Efecto hover opcional */
 .eye.eye--inside:hover {
-  color: #FF6600; /* naranja Pizza Mya */
+  color: #FF6600; 
 }
-/* Botones */
+
 .btn{
   padding:12px 16px;
   border-radius:10px;
@@ -123,18 +115,17 @@ body{
   font-weight:600;
 }
 .btn--primary{
-  background:#C00000; /* rojo */
+  background:#C00000;
   color:#fff;
 }
 .btn--primary:hover{
-  background:#FF6600; /* cambia a naranja al pasar el mouse */
+  background:#FF6600; 
 }
 .btn--secondary{
   background:#000;
   color:#fff;
 }
 
-/* Texto auxiliar */
 .muted{
   margin-top:12px;
   color:#555;
@@ -148,7 +139,6 @@ body{
   text-decoration:underline;
 }
 
-/* Hero superior */
 .hero-pizza{
   background: linear-gradient(180deg, #FF6600 0%, #C00000 100%);
   color: #fff;
@@ -159,7 +149,6 @@ body{
 .hero-pizza__title{ font-size: 40px; margin: 0 0 8px; font-weight: 900; }
 .hero-pizza__subtitle{ font-size: 18px; opacity: .95; margin: 0; }
 
-/* Título de sección */
 .home-section__title{
   margin: 24px 0 12px;
   font-size: 24px;
@@ -167,17 +156,15 @@ body{
   font-weight: 800;
 }
 
-/* Grid de tarjetas */
 .pizza-grid{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 18px;
 }
 
-/* Tarjeta */
 .pizza-card{
   background: #fff;
-  border: 1px solid #ffd3c0; /* un borde suave */
+  border: 1px solid #ffd3c0; 
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0,0,0,.06);
@@ -196,19 +183,16 @@ body{
   font-weight:900; color:#C00000; font-size:16px;
 }
 
-/* Botón pequeño con tus colores */
 .btn--sm{ padding:10px 12px; font-size:14px; border-radius:10px; }
 .btn--primary{ background:#C00000; color:#fff; border:none; cursor:pointer; }
 .btn--primary:hover{ background:#FF6600; }
 
-/* Espaciador bajo el header fijo (si tu Header es fixed) */
 .header-spacer{ height: 12px; }
 
-/* === HEADER Pizza Mya === */
 .header {
-  background: #FF6600; /* naranja */
-  border-bottom: 6px solid #C00000; /* línea roja */
-  border-top: 4px solid #000; /* línea negra */
+  background: #FF6600; 
+  border-bottom: 6px solid #C00000; 
+  border-top: 4px solid #000; 
   color: #fff;
   padding: 10px 0;
   position: sticky;
@@ -225,7 +209,6 @@ body{
   justify-content: space-between;
 }
 
-/* Logo + marca */
 .header__logo {
   display: flex;
   align-items: center;
@@ -243,7 +226,6 @@ body{
   text-shadow: 1px 1px 3px rgba(0,0,0,.2);
 }
 
-/* Navegación */
 .header__nav {
   display: flex;
   gap: 16px;
@@ -263,7 +245,6 @@ body{
   background: #000;
 }
 
-/* Responsive */
 @media (max-width: 640px) {
   .header__inner {
     flex-direction: column;

@@ -43,19 +43,16 @@ export default function Home() {
   React.useEffect(() => {
     if (location.state?.msg) {
       alert(location.state.msg);
-      // limpia el state para que no repita el alert si recargas
       navigate(location.pathname, { replace: true });
     }
   }, []);
 
   const handleAdd = (pizza) => {
     if (!getToken()) {
-      // no logueado → manda a login y recuerda a dónde volver
       return navigate("/login", {
         state: { redirectTo: "/", msg: "Inicia sesión para agregar al carrito 🍕" }
       });
     }
-    // aquí va tu lógica real de carrito
     alert(`🍕 Agregada: ${pizza.nombre}`);
   };
 

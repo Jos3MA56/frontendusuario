@@ -7,13 +7,11 @@ const CartContext = React.createContext({
 });
 
 export function CartProvider({ children }) {
-  // 🔹 Estado inicial desde localStorage
   const [count, setCount] = React.useState(() => {
     const n = Number(localStorage.getItem("cart_count"));
     return Number.isFinite(n) && n >= 0 ? n : 0;
   });
 
-  // 🔹 Agregar pizzas
   const add = (qty = 1) => {
     setCount((c) => {
       const next = c + (qty || 1);
@@ -22,13 +20,11 @@ export function CartProvider({ children }) {
     });
   };
 
-  // 🔹 Vaciar carrito
   const clear = () => {
     localStorage.removeItem("cart_count");
     setCount(0);
   };
 
-  // 🔹 Sincronizar entre pestañas
   React.useEffect(() => {
     const onStorage = (e) => {
       if (e.key === "cart_count") {
@@ -47,7 +43,6 @@ export function CartProvider({ children }) {
   );
 }
 
-// 🔹 Hook para usar el carrito en cualquier componente
 export function useCart() {
   return React.useContext(CartContext);
 }
