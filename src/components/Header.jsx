@@ -10,11 +10,11 @@ export default function Header() {
     // Detecta si hay token
     const token = localStorage.getItem("access_token");
     setIsLogged(!!token);
-  }, [location.pathname]); // se actualiza al cambiar de ruta
+  }, [location.pathname]);
 
   const handleLogout = () => {
-    localStorage.removeItem("access_token"); // 🔑 elimina token
-    navigate("/login");                      // redirige
+    localStorage.removeItem("access_token"); 
+    navigate("/login");                     
   };
 
   return (
