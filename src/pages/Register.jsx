@@ -15,7 +15,7 @@ export default function Register() {
       apMaterno: f.get("apMaterno"),
       telefono: f.get("telefono"),
       correo: f.get("correo"),
-      edad: Number(f.get("edad")) || undefined,
+      fechaNacimiento: f.get("fechaNacimiento") || undefined,
       password: pw1,
     };
 
@@ -51,7 +51,7 @@ export default function Register() {
         <input className="field" name="apMaterno" placeholder="Apellido Materno" />
         <input className="field" name="telefono" placeholder="Número de teléfono" />
         <input className="field" type="email" name="correo" placeholder="Correo" required />
-        <input className="field" type="number" min="0" name="edad" placeholder="Edad" />
+        <input className="field" type="date" name="fechaNacimiento" required placeholder="Fecha de Nacimiento" />
 
         <div className="field--wrap">
           <input id="pw1" className="field" type="password" name="password" placeholder="Contraseña" required />
