@@ -8,6 +8,9 @@ import Home from "./pages/Home.jsx";
 import Header from "./components/Header.jsx";
 import "./styles.css";
 
+import ResetRequest from "./pages/ResetRequest.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
+
 export default function App() {
   return (
     <>
@@ -18,6 +21,8 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/magic/request" element={<MagicRequest />} />
         <Route path="/magic" element={<Magic />} />
+        <Route path="/reset/request" element={<ResetRequest />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<Navigate to="/" replace />} />
