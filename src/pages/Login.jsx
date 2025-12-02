@@ -23,7 +23,7 @@ export default function Login() {
       const res = await fetch(`${import.meta.env.VITE_API_BASE}auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", 
+        credentials: "include",
         body: JSON.stringify({ correo, password }),
       });
       const data = await res.json();
@@ -46,21 +46,55 @@ export default function Login() {
         <p className="subtitle-lg">Inicia sesión en tu cuenta</p>
 
         <form className="stack" onSubmit={onSubmit}>
-          <input className="field" type="email" name="email" placeholder="Correo" required />
+          <input
+            className="field"
+            type="email"
+            name="email"
+            placeholder="Correo"
+            required
+          />
           <div className="field--wrap">
-            <input className="field" type={show ? "text" : "password"} name="password" placeholder="Contraseña" required />
-            <button type="button" className="eye eye--inside" onClick={() => setShow(!show)} aria-label="Mostrar/Ocultar contraseña" >👁️</button>
+            <input
+              className="field"
+              type={show ? "text" : "password"}
+              name="password"
+              placeholder="Contraseña"
+              required
+            />
+            <button
+              type="button"
+              className="eye eye--inside"
+              onClick={() => setShow(!show)}
+              aria-label="Mostrar/Ocultar contraseña"
+            >
+              👁️
+            </button>
           </div>
-          <button className="btn btn--primary btn--lg" type="submit">Iniciar sesión</button>
+
+          <button className="btn btn--primary btn--lg" type="submit">
+            Iniciar sesión
+          </button>
         </form>
 
-        <div className="muted">
-          ¿Prefieres no usar contraseña?{" "}
-          <Link to="/magic/request" className="link">Accede con un enlace mágico ✨</Link>
+        <div className="muted" style={{ marginTop: "0.75rem" }}>
+          ¿Olvidaste tu contraseña?{" "}
+          <Link to="/reset/request" className="link">
+            Recuperar acceso
+          </Link>
         </div>
 
         <div className="muted">
-          ¿No tienes cuenta? <Link to="/register" className="link">Regístrate</Link>
+          ¿Prefieres no usar contraseña?{" "}
+          <Link to="/magic/request" className="link">
+            Accede con un enlace mágico ✨
+          </Link>
+        </div>
+
+        <div className="muted">
+          ¿No tienes cuenta?{" "}
+          <Link to="/register" className="link">
+            Regístrate
+          </Link>
         </div>
       </section>
     </main>
