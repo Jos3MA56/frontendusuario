@@ -10,6 +10,7 @@ import "./styles.css";
 
 import ResetRequest from "./pages/ResetRequest.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
+import FirmaDigital from "./pages/FirmaDigital.jsx";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/firma" element={<FirmaDigital />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
